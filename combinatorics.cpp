@@ -90,7 +90,69 @@ class FunkcijeUtil{
       }
 };
 
-string rankToGray(int rank);
+class PodskupoviUtil{
+   public:
+      static void printGrayCode(int k){
+         for (int i = 0; i < pow(2,k); i++){
+            string code = rankToGray(i);
+            int c = code.length();
+            for (int j = 0; j < k - c; j++){
+               code = '0' + code;
+            }
+            cout << code << endl;
+         }
+      }
+
+      static string nextGray(string code){
+         return rankToGray(grayToRank(code) + 1);
+      }
+   private:
+      static string rankToGray(int rank){
+         string code = "";
+         if (rank == 0) return "0";
+         int eksp = (int) log2(rank) + 1;
+         int lower = 0, upper = pow(2,eksp) - 1, middle;
+         bool flag = 0;
+         while (lower != upper){
+            middle = (upper+lower)/2;
+            if ((rank > middle) != flag){
+               code += "1";
+               flag = !flag;
+            } else code += "0";
+            if (rank > middle) {
+               lower = (upper+lower)/2 + 1;
+            }
+            else upper = (upper+lower)/2;
+         }
+         return code;
+      }
+
+      static int grayToRank(string code){
+         int lower=0,upper=pow(2,code.length())-1;
+         bool flag = false, up;
+         for (auto c: code){
+            up = (c == '1') != flag;
+            if (c == '1') flag = !flag;
+            if (up){
+               lower = (upper+lower)/2 + 1;
+            }
+            else upper = (upper+lower)/2;
+         }
+         return upper;
+      }
+      static string bin(int k){
+         string s = "";
+         if (k == 0) return "0";
+         while (k != 0){
+            if (k%2){
+               s = "1" + s;
+            }
+            else s = "0" + s;
+            k/=2;
+         }
+         return s;
+      }
+};
 bool varUzPonNext(vector<int>& curr, int n, int m);
 bool rastuceFunkcijeNext(vector<int>& curr, int n, int m);
 
@@ -164,18 +226,7 @@ long long generirajkPodskupove(int n, int k){
    return c;
 }
 
-string bin(int k){
-   string s = "";
-   if (k == 0) return "0";
-   while (k != 0){
-      if (k%2){
-         s = "1" + s;
-      }
-      else s = "0" + s;
-      k/=2;
-   }
-   return s;
-}
+
 
 long long cjelobrojnaRjesenja(int xeva, int k){
    if (xeva == 1) return 1;
@@ -184,55 +235,6 @@ long long cjelobrojnaRjesenja(int xeva, int k){
       suma += cjelobrojnaRjesenja(xeva-1, k-i);
    }
    return suma;
-}
-
-void printGrayCode(int k){
-   for (int i = 0; i < pow(2,k); i++){
-      string code = rankToGray(i);
-      int c = code.length();
-      for (int j = 0; j < k - c; j++){
-         code = '0' + code;
-      }
-      cout << code << endl;
-   }
-}
-
-string rankToGray(int rank){
-   string code = "";
-   if (rank == 0) return "0";
-   int eksp = (int) log2(rank) + 1;
-   int lower = 0, upper = pow(2,eksp) - 1, middle;
-   bool flag = 0;
-   while (lower != upper){
-      middle = (upper+lower)/2;
-      if ((rank > middle) != flag){
-         code += "1";
-         flag = !flag;
-      } else code += "0";
-      if (rank > middle) {
-         lower = (upper+lower)/2 + 1;
-      }
-      else upper = (upper+lower)/2;
-   }
-   return code;
-}
-
-int grayToRank(string code){
-   int lower=0,upper=pow(2,code.length())-1;
-   bool flag = false, up;
-   for (auto c: code){
-      up = (c == '1') != flag;
-      if (c == '1') flag = !flag;
-      if (up){
-         lower = (upper+lower)/2 + 1;
-      }
-      else upper = (upper+lower)/2;
-   }
-   return upper;
-}
-
-string nextGray(string code){
-   return rankToGray(grayToRank(code) + 1);
 }
 
 int main(){
