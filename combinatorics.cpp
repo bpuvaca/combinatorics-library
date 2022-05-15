@@ -106,6 +106,25 @@ class PodskupoviUtil{
       static string nextGray(string code){
          return rankToGray(grayToRank(code) + 1);
       }
+      static long long generirajPodskupove(int n){
+         long long count = 0, i;
+         for (i = 0; i < pow(2,n); i++){
+            count++;
+         }
+         return count;
+      }
+
+      static long long generirajkPodskupove(int n, int k){
+         string subset = "";
+         int c = 0;
+         for (int i = 0; i < n-k; i++) subset += "0";
+         for (int i = 0; i < k; i++) subset += "1";
+         do{
+            //cout << subset << endl;
+            c++;
+         } while (next_permutation(subset.begin(), subset.end()));
+         return c;
+      }
    private:
       static string rankToGray(int rank){
          string code = "";
@@ -152,24 +171,8 @@ class PodskupoviUtil{
          }
          return s;
       }
+
 };
-bool varUzPonNext(vector<int>& curr, int n, int m);
-bool rastuceFunkcijeNext(vector<int>& curr, int n, int m);
-
-
-int neuzastopniPodskup(){
-   int count = 0,i,j,k,l;
-   for (i = 1; i < 5; i++){
-      for (j = i + 2; j < 7; j++){
-         for (k = j + 2; k < 9; k++){
-            for (l = k + 2; l < 11; l++){
-               count++;
-            }
-         }
-      }
-   }
-   return count;
-}
 
 long long zbroj2n(int n){
    long long count = 0, i,j,k;
@@ -204,26 +207,6 @@ long long deranzmani(int n){
       }
    } while (next_permutation(perm.begin(), perm.end()));
    return count;
-}
-
-long long generirajPodskupove(int n){
-   long long count = 0, i;
-   for (i = 0; i < pow(2,n); i++){
-      count++;
-   }
-   return count;
-}
-
-long long generirajkPodskupove(int n, int k){
-   string subset = "";
-   int c = 0;
-   for (int i = 0; i < n-k; i++) subset += "0";
-   for (int i = 0; i < k; i++) subset += "1";
-   do{
-      //cout << subset << endl;
-      c++;
-   } while (next_permutation(subset.begin(), subset.end()));
-   return c;
 }
 
 
